@@ -27,7 +27,15 @@ app.use(cors({
 // }));
 
 app.get('/api/heroes', (req, res) => {
-    res.json(heroes);
+    const term = (req.query.q || '').toLowerCase();
+
+    if (term) {
+        return res.json(
+            heroes.filter(hero => hero.name.toLowerCase().indexOf(term) !== -1)
+        );
+    } else {
+        res.json(heroes);
+    }
 });
 
 app.get('/api/hero/:heroId', (req, res) => {
